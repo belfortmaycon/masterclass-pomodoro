@@ -37,6 +37,16 @@ module.exports = {
     // note you must disable the base rule as it can report incorrect errors
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
     'no-restricted-imports': [
       'error',
       {
@@ -51,7 +61,7 @@ module.exports = {
           '/^react/',
           'module',
           '/^@shared/',
-          '/^~/',
+          '/^.//',
           ['parent', 'sibling', 'index'],
         ],
         alphabetize: { order: 'asc', ignoreCase: true },
