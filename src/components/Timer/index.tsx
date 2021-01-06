@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Typography } from '@material-ui/core';
-import { secodsToMinutes } from 'utils/secods-to-minutes';
+import { secondsToMinutes } from 'utils/seconds-to-minutes';
 
 // import { Container } from './styles';
 
@@ -12,6 +12,6 @@ interface Props {
 export function Timer(props: Props): JSX.Element {
   const { mainTime } = props;
   return (
-    <Typography variant="h1">{secodsToMinutes(mainTime)}</Typography>
+    <Typography variant="h1">{secondsToMinutes(mainTime)}</Typography>
   );
 }
