@@ -30,7 +30,7 @@ export default function PomodoroTimer(props: IPomodoroTimerProps): JSX.Element {
   const [fullWorkingTime, setFullWorkingTime] = useState(0);
   const [numberOfPomodoros, setNumberOfPomodoros] = useState(0);
 
-  const styledProps: IPomodoroStyles = { isWorking: true };
+  const styledProps: IPomodoroStyles = { isWorking: working };
   const classes = PomodoroTimerStyle(styledProps);
 
   useInterval(() => {
@@ -47,16 +47,33 @@ export default function PomodoroTimer(props: IPomodoroTimerProps): JSX.Element {
     setTimeCounting(!timeCounting);
   }, [timeCounting]);
 
+  const handleRestStart = useCallback(
+    (long: boolean) => {
+      setTimeCounting(true);
+      setWorking(false);
+      setResting(true);
+
+      if (long) {
+        setMainTime(longRestTime);
+      } else {
+        setMainTime(shortRestTime);
+      }
+    }, [longRestTime, shortRestTime],
+  );
+
   return (
     <FlexContainer>
       <Card>
-        <CardHeader className={classes.title} title="Você está: Trabalhando" />
+        <CardHeader
+          className={classes.title}
+          title={working ? 'Você está: Trabalhando' : 'Você está: Descansando'}
+        />
         <CardContent className={classes.content}>
           <Timer mainTime={mainTime} />
         </CardContent>
         <CardActions>
           <Button onClick={handleWorkStart}>Trabalhar</Button>
-          <Button>Descansar</Button>
+          <Button onClick={() => { handleRestStart(false); }}>Descansar</Button>
           <Button
             disabled={!working && !resting}
             onClick={handlePlayPause}
