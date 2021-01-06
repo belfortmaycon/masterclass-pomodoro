@@ -33,10 +33,10 @@ const App: React.FC = () => (
       </AppBar>
       <FlexContainer padding={3}>
         <PomodoroTimer
-          pomodoroTime={2000}
-          shortRestTime={1000}
-          longRestTime={2000}
-          cycles={4}
+          pomodoroTime={10}
+          shortRestTime={3}
+          longRestTime={5}
+          cycles={2}
         />
       </FlexContainer>
     </FlexContainer>

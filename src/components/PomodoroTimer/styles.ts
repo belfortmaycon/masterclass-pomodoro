@@ -11,4 +11,11 @@ export const PomodoroTimerStyle = makeStyles<Theme, IPomodoroStyles>(({ palette 
   content: {
     textAlign: 'center',
   },
+  buttons: {
+    flex: 1,
+    flexDirection: 'row',
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 }));
