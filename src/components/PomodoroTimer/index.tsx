@@ -1,12 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   Button, Card, CardActions, CardContent, CardHeader, Grid,
 } from '@material-ui/core';
-import { Pause, PlayArrow } from '@material-ui/icons';
+import {
+  Pause, PlayArrow, Save, Stop,
+} from '@material-ui/icons';
 import FlexContainer from 'components/FlexContainer';
 import { Timer } from 'components/Timer';
 import { useInterval } from 'hooks/use-interval';
+import { StoreState } from 'store/modules';
+import { savePomodoroSummary } from 'store/modules/pomodoro/actions';
 import { secondsToTime } from 'utils/seconds-to-time';
 
 import { IPomodoroStyles, IPomodoroTimerProps } from './interfaces';
@@ -20,10 +25,20 @@ export default function PomodoroTimer(props: IPomodoroTimerProps): JSX.Element {
     cycles,
   } = props;
 
+  const {
+    totalCycles,
+    totalOfPomodoros,
+    totalWorkingTime,
+  } = useSelector((state: StoreState) => state.pomodoro);
+
+  // console.log(totalCycles, totalOfPomodoros, totalWorkingTime);
+
+  const dispatch = useDispatch();
   const [mainTime, setMainTime] = useState(pomodoroTime);
   const [timeCounting, setTimeCounting] = useState(false);
   const [working, setWorking] = useState(false);
   const [resting, setResting] = useState(false);
+  const [stopped, setStopped] = useState(false);
   const [cyclesQtdManager, setCyclesQtdManager] = useState(
     new Array(cycles - 1).fill(true),
   );
@@ -62,6 +77,37 @@ export default function PomodoroTimer(props: IPomodoroTimerProps): JSX.Element {
       }
     }, [longRestTime, shortRestTime],
   );
+
+  // const canSave = useCallback(() => {
+  //   const can = !!(((!working && !resting && !timeCounting)
+  //   && (fullWorkingTime > 0)));
+
+  //   return can;
+  // }, [fullWorkingTime, resting, timeCounting, working]);
+
+  const handleStop = useCallback(() => {
+    setStopped(true);
+    setTimeCounting(false);
+    setWorking(false);
+    setResting(false);
+    setMainTime(pomodoroTime);
+  }, [pomodoroTime]);
+
+  const handleSave = useCallback(() => {
+    dispatch(savePomodoroSummary({
+      totalCycles: totalCycles + completedCycles,
+      totalOfPomodoros: totalOfPomodoros + numberOfPomodoros,
+      totalWorkingTime: totalWorkingTime + fullWorkingTime,
+    }));
+  }, [
+    completedCycles,
+    dispatch,
+    fullWorkingTime,
+    numberOfPomodoros,
+    totalCycles,
+    totalOfPomodoros,
+    totalWorkingTime,
+  ]);
 
   useEffect(() => {
     if (mainTime > 0) return;
@@ -136,6 +182,14 @@ export default function PomodoroTimer(props: IPomodoroTimerProps): JSX.Element {
             {
               timeCounting ? <Pause /> : <PlayArrow />
             }
+          </Button>
+          <Button onClick={handleStop}><Stop /></Button>
+          <Button
+            startIcon={<Save />}
+            disabled={!stopped}
+            onClick={handleSave}
+          >
+            Salvar
           </Button>
         </CardActions>
       </Card>
