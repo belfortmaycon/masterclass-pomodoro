@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
 const MenuItems: React.FC = () => {
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const menuOpened = Boolean(anchorEl);
 
   const handleMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClick = (pageURL: string) => {
+    history.push(pageURL);
+    setAnchorEl(null);
   };
 
   const menuItems = [
@@ -49,7 +56,9 @@ const MenuItems: React.FC = () => {
         {menuItems.map((item) => {
           const { menuTitle, pageURL } = item;
           return (
-            <MenuItem>{menuTitle}</MenuItem>
+            <MenuItem key={menuTitle} onClick={() => handleMenuClick(pageURL)}>
+              {menuTitle}
+            </MenuItem>
           );
         })}
       </Menu>
