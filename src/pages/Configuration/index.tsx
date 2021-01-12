@@ -5,8 +5,8 @@ import { Button, Paper, TextField } from '@material-ui/core';
 import { Save } from '@material-ui/icons';
 import FlexContainer from 'components/FlexContainer';
 import { useFormik } from 'formik';
-import { StoreState } from 'store/modules';
-import { saveConfiguration } from 'store/modules/config/actions';
+import { RootState } from 'store';
+import { saveConfiguration } from 'store/ducks/configuration';
 import * as yup from 'yup';
 
 import { useStyles } from './styles';
@@ -40,7 +40,7 @@ const Configuration: React.FC = () => {
     shortRestTime,
     longRestTime,
     cycles,
-  } = useSelector((state:StoreState) => state.configuration);
+  } = useSelector((state:RootState) => state.configuration);
 
   const dispatch = useDispatch();
 

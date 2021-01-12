@@ -10,8 +10,8 @@ import {
 import FlexContainer from 'components/FlexContainer';
 import { Timer } from 'components/Timer';
 import { useInterval } from 'hooks/use-interval';
-import { StoreState } from 'store/modules';
-import { savePomodoroSummary } from 'store/modules/pomodoro/actions';
+import { RootState } from 'store';
+import { savePomodoroSummary } from 'store/ducks/pomodoro';
 import { secondsToTime } from 'utils/seconds-to-time';
 
 import { IPomodoroStyles, IPomodoroTimerProps } from './interfaces';
@@ -29,7 +29,7 @@ export default function PomodoroTimer(props: IPomodoroTimerProps): JSX.Element {
     totalCycles,
     totalOfPomodoros,
     totalWorkingTime,
-  } = useSelector((state: StoreState) => state.pomodoro);
+  } = useSelector((state: RootState) => state.pomodoro);
 
   // console.log(totalCycles, totalOfPomodoros, totalWorkingTime);
 
